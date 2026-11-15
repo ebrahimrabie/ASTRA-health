@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Astra Health - Deep Space Telemetry Suite</title>
+  
+  <!-- Material Symbols Outlined font -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  
+  <style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #0c1323;
+        color: #dce2f9;
+        font-family: 'Inter', sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+
+  <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#2e3446",
+            "on-secondary-fixed": "#001f2b",
+            "surface-variant": "#2e3446",
+            "on-tertiary": "#2d009d",
+            "outline": "#8b91a0",
+            "on-primary": "#002f66",
+            "surface-container-high": "#232a3b",
+            "secondary-fixed-dim": "#6ed2ff",
+            "on-background": "#dce2f9",
+            "surface-dim": "#0c1323",
+            "on-tertiary-container": "#27008b",
+            "primary-fixed-dim": "#abc7ff",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#003547",
+            "inverse-primary": "#005cbb",
+            "on-primary-fixed": "#001b3f",
+            "secondary": "#6ed2ff",
+            "tertiary-fixed-dim": "#c8bfff",
+            "secondary-container": "#00b9ef",
+            "on-tertiary-fixed-variant": "#4318cc",
+            "tertiary-container": "#907eff",
+            "on-surface-variant": "#c1c6d6",
+            "tertiary": "#c8bfff",
+            "on-error": "#690005",
+            "surface-container-low": "#151b2c",
+            "on-tertiary-fixed": "#190064",
+            "on-primary-fixed-variant": "#00458f",
+            "inverse-surface": "#dce2f9",
+            "error-container": "#93000a",
+            "primary": "#abc7ff",
+            "primary-container": "#448fff",
+            "surface-container-lowest": "#070e1e",
+            "outline-variant": "#414754",
+            "background": "#0c1323",
+            "on-surface": "#dce2f9",
+            "on-secondary-fixed-variant": "#004d65",
+            "on-secondary-container": "#00455c",
+            "surface-tint": "#abc7ff",
+            "surface-container": "#191f30",
+            "secondary-fixed": "#bfe8ff",
+            "error": "#ffb4ab",
+            "inverse-on-surface": "#2a3042",
+            "on-primary-container": "#002859",
+            "primary-fixed": "#d7e2ff",
+            "surface-bright": "#32394b",
+            "surface": "#0c1323",
+            "tertiary-fixed": "#e5deff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem"
+          },
+          fontSize: {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "metric-display": ["30px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "headline-xl-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-lg": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-xl": ["32px", { "lineHeight": "40px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Required CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+  <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+  <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-secondary/30">
+  <div id="root" class="flex-1 flex flex-col min-h-screen"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
+    const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+    // Shared Shared Header Component
+    const AppHeader = ({ title = "Astra Health", showBack = false, subtitle = "Health" }) => {
+      const navigate = useNavigate();
+      return (
+        <header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.4)]">
+          <div class="flex justify-between items-center px-margin pt-space-xs text-on-surface-variant font-label-sm text-label-sm select-none">
+            <span class="font-medium tracking-tight text-on-surface">09:41</span>
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+              <span class="material-symbols-outlined text-[14px]">wifi</span>
+              <span class="material-symbols-outlined text-[14px]">battery_full</span>
+            </div>
+          </div>
+          <div class="h-16 px-margin flex items-center justify-between gap-space-md">
+            <div class="flex items-center gap-space-xs min-w-0">
+              {showBack ? (
+                <button 
+                  aria-label="Navigate back" 
+                  class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:text-secondary hover:bg-surface-container/50 transition-colors flex-shrink-0"
+                  onClick={() => navigate(-1)}
+                >
+                  <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+                </button>
+              ) : null}
+              <Link to="/home" class="flex items-center gap-2">
+                <img 
+                  alt="Astra Health Logo" 
+                  class="h-7 w-auto object-contain flex-shrink-0" 
+                  src="https://lh3.googleusercontent.com/aida/ALJJyrCAtbb3kpuZ7vL6njMT_1l0ICtwggK4AhQmcoxxEOI2wXEriZ-imBUrIC__BLGNtTlXYN2_8l3_2j4lvrBASk3TptDFxFofysWcxaVUgdbJhFFZfn-At_QhsWFJXBZ-llCXaRk5ifQQxO5lbIQ8KIp7y16rSe58S6rJhUnFzjXgOWpjqYCl1twObLq2tcdrsiyuhIIpWiPyaLuQmqV1CC9-vdyxUJmOu0ktYHXxWtQM"
+                />
+                {!showBack && <span class="font-headline-md text-headline-md tracking-tight text-on-surface truncate">Astra Health</span>}
+              </Link>
+              {!showBack && <span class="text-outline-variant font-headline-md text-headline-md">/</span>}
+              <h1 class="font-headline-md text-headline-md tracking-tight text-on-surface truncate">{title}</h1>
+            </div>
+            <div class="flex items-center gap-space-xs flex-shrink-0">
+              <Link 
+                to="/notifications" 
+                aria-label="Alerts" 
+                class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-secondary transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+              </Link>
+              <Link to="/profile">
+                <img 
+                  alt="Profile" 
+                  class="w-8 h-8 rounded-full object-cover ring-1 ring-secondary/30" 
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGnlKUGl_KESoG-Mzk5KdBRcuu25I5MOeVZ0bCYDArk4gPm3lcSGxHmhiFSsi0dR4_igGTYx7zqLhS05OZmTG87wn1vGnF4GnUCPMk1cfHlhXWYKhrGzMAu9BcRZBkuxV4ldlOCv79eGOAyGqB30MdV06R9VZw9X38avhAu33sn_SUK-Rly4d-57khw2kYU81nA5WHLcObpDboTtta48mQkAnKwPr8MCpM4dAWiYVu"
+                />
+              </Link>
+            </div>
+          </div>
+        </header>
+      );
+    };
+
+    // Shared Bottom Navigation Bar
+    const AppNav = () => {
+      const location = useLocation();
+      const currentPath = location.pathname;
+
+      const navItems = [
+        { path: "/home", label: "Home", icon: "home" },
+        { path: "/health", label: "Health", icon: "ecg_heart" },
+        { path: "/risk-assessment", label: "Risks", icon: "shield_with_heart" },
+        { path: "/health-assistant", label: "Protocol", icon: "smart_toy" },
+        { path: "/profile", label: "Profile", icon: "person" }
+      ];
+
+      return (
+        <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+          <div class="flex justify-around items-center h-16 px-space-xs">
+            {navItems.map((item) => {
+              const isActive = currentPath === item.path || (item.path === "/health" && (currentPath.includes("blood-pressure") || currentPath.includes("heart-rate") || currentPath.includes("sleep")));
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  class={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-space-xs transition-all ${
+                    isActive ? "text-secondary drop-shadow-[0_0_8px_rgba(110,210,255,0.7)]" : "text-on-surface-variant hover:text-on-surface"
+                  }`}
+                >
+                  <span 
+                    class="material-symbols-outlined text-[22px]"
+                    style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
+                  >
+                    {item.icon}
+                  </span>
+                  <span class="font-label-sm text-label-sm font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      );
+    };
+
+    // SCREEN 13: Login Screen
+    const LoginScreen = () => {
+      const navigate = useNavigate();
+      const [showPassword, setShowPassword] = useState(false);
+      const [astronautId, setAstronautId] = useState("AST-7421");
+      const [password, setPassword] = useState("deepspace2026");
+
+      return (
+        <div class="flex-1 flex flex-col relative w-full pt-safe pb-safe bg-surface">
+          <div class="fixed top-0 w-full z-50 pt-safe bg-surface/60 backdrop-blur-md">
+            <div class="flex justify-between items-center px-margin pt-space-xs text-on-surface-variant font-label-sm text-label-sm select-none">
+              <span class="font-medium tracking-tight text-on-surface">09:41</span>
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+                <span class="material-symbols-outlined text-[14px]">wifi</span>
+                <span class="material-symbols-outlined text-[14px]">battery_full</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col w-full relative min-w-0 overflow-hidden">
+            <div class="relative w-full h-[380px] overflow-hidden flex flex-col justify-between p-gutter">
+              <div 
+                class="absolute inset-0 bg-cover bg-center" 
+                style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkVG5mw2SEurbxpTTkDVAaPl94QRxPWtDokXmboEAi66gZ2cppXGI6WX195wQmvdH-emG1DcEXZlUCDHGQbbq2F0EnkO2se_81iJDWmuhlZXwHbjy23M2WiDEIUHtwkkTiCkFwlZg7ny0C7kcCVdApx34sLQvJO76_JkzcwZgjGd6pw0N1JZxfuIiS3xKxd4J5l6nvKCSdyTNLTzCVTU85BQsrQsSRxSq50tkij2F4')` }}
+              ></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-surface/30"></div>
+              <div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-transparent to-surface"></div>
+              <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-secondary/15 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div class="relative z-10 flex flex-col items-center justify-center pt-space-md">
+                <div class="relative flex items-center justify-center w-16 h-16 rounded-xl bg-surface-container-high/60 backdrop-blur-xl shadow-lg">
+                  <img alt="Astra Health Logo" class="w-12 h-12 object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCAtbb3kpuZ7vL6njMT_1l0ICtwggK4AhQmcoxxEOI2wXEriZ-imBUrIC__BLGNtTlXYN2_8l3_2j4lvrBASk3TptDFxFofysWcxaVUgdbJhFFZfn-At_QhsWFJXBZ-llCXaRk5ifQQxO5lbIQ8KIp7y16rSe58S6rJhUnFzjXgOWpjqYCl1twObLq2tcdrsiyuhIIpWiPyaLuQmqV1CC9-vdyxUJmOu0ktYHXxWtQM"/>
+                  <div class="absolute inset-0 rounded-xl bg-secondary/10 filter blur-sm pointer-events-none"></div>
+                </div>
+                <div class="flex items-center gap-space-xs mt-space-sm">
+                  <span class="font-headline-lg text-headline-lg tracking-wider text-on-surface font-bold">ASTRA</span>
+                  <span class="font-headline-lg text-headline-lg tracking-wider text-secondary font-bold">HEALTH</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-3 py-1 mt-space-xs rounded-full bg-surface-container/70 backdrop-blur-md">
+                  <span class="w-2 h-2 rounded-full bg-[#19D69B] animate-pulse"></span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Orbital Sync Active • Station 04</span>
+                </div>
+              </div>
+
+              <div class="relative z-10 text-center pb-space-xs">
+                <h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface tracking-tight">Welcome Back</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Your Health. Our Mission.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col px-gutter pb-space-xl space-y-space-md relative z-10">
+              <div class="flex items-center justify-between p-space-sm px-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-lg">
+                <div class="flex items-center gap-space-sm">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-highest text-secondary">
+                    <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-label-caps text-label-caps text-secondary font-semibold uppercase">Bio-Telemetry Feed</span>
+                    <span class="font-body-sm text-body-sm text-on-surface">Artemis II • Crew Monitoring Protocol</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-[20px] animate-pulse">sensors</span>
+              </div>
+
+              <form class="flex flex-col space-y-space-sm pt-space-xs" onSubmit={(e) => { e.preventDefault(); navigate('/home'); }}>
+                <div class="flex flex-col space-y-1">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant px-1 flex items-center justify-between" htmlFor="astronaut-id">
+                    <span>OPERATIONAL CREDENTIAL</span>
+                    <span class="text-secondary/70 font-mono">AST-SEC-7</span>
+                  </label>
+                  <div class="relative flex items-center rounded-xl bg-surface-container-low/90 focus-within:bg-surface-container-high transition-all shadow-inner">
+                    <div class="flex items-center justify-center pl-space-md pr-space-xs text-on-surface-variant pointer-events-none">
+                      <span class="material-symbols-outlined text-[20px]">badge</span>
+                    </div>
+                    <input 
+                      class="w-full py-3.5 pr-space-md bg-transparent text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none" 
+                      id="astronaut-id" 
+                      placeholder="Astronaut ID (e.g. AST-7421)" 
+                      type="text" 
+                      value={astronautId}
+                      onChange={(e) => setAstronautId(e.target.value)}
+                    />
+                    <div class="pr-space-md flex items-center text-secondary">
+                      <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col space-y-1">
+                  <div class="flex justify-between items-center px-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant" htmlFor="password-input">BIOMETRIC SECURITY KEY</label>
+                    <a class="font-label-sm text-label-sm text-secondary hover:text-secondary-fixed transition-colors" href="#">Reset Token</a>
+                  </div>
+                  <div class="relative flex items-center rounded-xl bg-surface-container-low/90 focus-within:bg-surface-container-high transition-all shadow-inner">
+                    <div class="flex items-center justify-center pl-space-md pr-space-xs text-on-surface-variant pointer-events-none">
+                      <span class="material-symbols-outlined text-[20px]">lock</span>
+                    </div>
+                    <input 
+                      class="w-full py-3.5 bg-transparent text-on-surface font-body-md text-body-md tracking-wider placeholder:text-outline focus:outline-none" 
+                      id="password-input" 
+                      placeholder="••••••••••••" 
+                      type={showPassword ? "text" : "password"} 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button 
+                      aria-label="Toggle password visibility" 
+                      class="flex items-center justify-center px-space-md text-on-surface-variant hover:text-on-surface focus:outline-none" 
+                      onClick={() => setShowPassword(!showPassword)}
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-[20px]">
+                        {showPassword ? "visibility_off" : "visibility"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1 px-1">
+                  <label class="flex items-center gap-space-xs cursor-pointer select-none">
+                    <input defaultChecked class="w-4 h-4 rounded bg-surface-container-highest text-secondary focus:ring-0 accent-secondary cursor-pointer" type="checkbox"/>
+                    <span class="font-label-md text-label-md text-on-surface-variant">Preserve Mission Terminal Session</span>
+                  </label>
+                </div>
+
+                <div class="flex flex-col space-y-space-sm pt-space-sm">
+                  <button 
+                    class="relative w-full py-3.5 px-space-md rounded-xl bg-gradient-to-r from-[#2585FF] to-[#00b9ef] text-on-primary-container font-headline-md text-headline-md font-semibold tracking-wide shadow-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-space-xs overflow-hidden" 
+                    type="submit"
+                  >
+                    <span>Sign In</span>
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                  </button>
+                  <button 
+                    onClick={() => navigate('/home')}
+                    class="w-full py-3 px-space-md rounded-xl bg-surface-container/60 hover:bg-surface-container-high text-secondary font-label-md text-label-md tracking-wide active:scale-[0.98] transition-all flex items-center justify-center gap-space-xs" 
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">wifi_off</span>
+                    <span>Continue Offline</span>
+                  </button>
+                </div>
+              </form>
+
+              <div class="flex flex-col items-center pt-space-xs">
+                <div class="flex items-center gap-space-sm w-full my-space-xs">
+                  <div class="h-[1px] flex-1 bg-surface-container-highest"></div>
+                  <span class="font-label-caps text-label-caps text-outline uppercase">Or Authenticate via Capsule Pod</span>
+                  <div class="h-[1px] flex-1 bg-surface-container-highest"></div>
+                </div>
+                <button 
+                  onClick={() => navigate('/home')}
+                  class="mt-space-xs flex items-center gap-space-sm px-space-md py-2.5 rounded-full bg-surface-container-low hover:bg-surface-container transition-colors text-on-surface" 
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-secondary text-[20px]">fingerprint</span>
+                  <span class="font-label-md text-label-md">Scan Glove Sensor / Iris Pass</span>
+                </button>
+              </div>
+
+              <div class="flex items-center justify-center gap-space-xs text-outline font-label-sm text-label-sm pt-space-xs">
+                <span class="material-symbols-outlined text-[14px]">lock_reset</span>
+                <span>ESA / NASA 256-bit AES Sub-orbital Medical Link</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // SCREEN 14: Home Dashboard Screen
+    const HomeScreen = () => {
+      const navigate = useNavigate();
+      const [swept, setSwept] = useState(false);
+
+      const handleSweep = () => {
+        setSwept(true);
+        setTimeout(() => setSwept(false), 2500);
+      };
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Home" />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin">
+            <div class="flex flex-col w-full pb-6 space-y-4">
+              {/* Astronaut Profile Header */}
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center space-x-3 min-w-0">
+                  <div class="relative flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-secondary to-primary shadow-[0_0_12px_rgba(110,210,255,0.4)]">
+                      <img alt="Astronaut Alex Rivera" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGnlKUGl_KESoG-Mzk5KdBRcuu25I5MOeVZ0bCYDArk4gPm3lcSGxHmhiFSsi0dR4_igGTYx7zqLhS05OZmTG87wn1vGnF4GnUCPMk1cfHlhXWYKhrGzMAu9BcRZBkuxV4ldlOCv79eGOAyGqB30MdV06R9VZw9X38avhAu33sn_SUK-Rly4d-57khw2kYU81nA5WHLcObpDboTtta48mQkAnKwPr8MCpM4dAWiYVu"/>
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#19D69B] rounded-full shadow-[0_0_8px_rgba(25,214,155,0.8)] border-2 border-surface"></span>
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <h2 class="font-headline-md text-headline-md font-semibold text-on-surface tracking-tight truncate">Welcome back, Alex!</h2>
+                    <div class="flex items-center space-x-2 mt-0.5">
+                      <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Mission: Artemis-2</span>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full font-label-caps text-label-caps bg-secondary/15 text-secondary">
+                        Day 12 / 21
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="relative flex-shrink-0">
+                  <Link to="/notifications" aria-label="Quick Notifications" class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">notifications</span>
+                  </Link>
+                  <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF5365] shadow-[0_0_6px_rgba(255,83,101,0.9)]"></span>
+                </div>
+              </div>
+
+              {/* Telemetry Status Ribbon */}
+              <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-surface-container-low shadow-sm">
+                <div class="flex items-center space-x-2">
+                  <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                  </span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Bio-Telemetry Stream</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                  <span class="font-label-sm text-label-sm font-medium text-secondary">Orbital Sync Active</span>
+                  <span class="material-symbols-outlined text-[14px] text-secondary">sensors</span>
+                </div>
+              </div>
+
+              {/* 2x2 Telemetry Grid */}
+              <div class="grid grid-cols-2 gap-3">
+                {/* Heart Rate Card */}
+                <Link to="/heart-rate" class="relative flex flex-col justify-between p-3.5 rounded-xl bg-surface-container shadow-md overflow-hidden group hover:bg-surface-container-high transition-all">
+                  <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-[#FF5365]/10 rounded-full blur-xl pointer-events-none"></div>
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-lg bg-[#FF5365]/15 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[18px] text-[#FF5365]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps text-[#19D69B] px-1.5 py-0.5 rounded-full bg-[#19D69B]/10">Stable</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline space-x-1">
+                      <span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">72</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">bpm</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Heart Rate</p>
+                  </div>
+                </Link>
+
+                {/* Blood Pressure Card */}
+                <Link to="/blood-pressure" class="relative flex flex-col justify-between p-3.5 rounded-xl bg-surface-container shadow-md overflow-hidden hover:bg-surface-container-high transition-all">
+                  <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary/10 rounded-full blur-xl pointer-events-none"></div>
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-lg bg-secondary/15 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[18px] text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps text-[#19D69B] px-1.5 py-0.5 rounded-full bg-[#19D69B]/10">Optimal</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline space-x-1">
+                      <span class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">118/76</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">mmHg</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Blood Pressure</p>
+                  </div>
+                </Link>
+
+                {/* Sleep Card */}
+                <Link to="/sleep" class="relative flex flex-col justify-between p-3.5 rounded-xl bg-surface-container shadow-md overflow-hidden hover:bg-surface-container-high transition-all">
+                  <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-tertiary-container/15 rounded-full blur-xl pointer-events-none"></div>
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[18px] text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>dark_mode</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps text-secondary px-1.5 py-0.5 rounded-full bg-secondary/10">+0.4h</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline space-x-1">
+                      <span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">7.8</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">h</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Sleep Duration</p>
+                  </div>
+                </Link>
+
+                {/* Mood Card */}
+                <Link to="/achievements" class="relative flex flex-col justify-between p-3.5 rounded-xl bg-surface-container shadow-md overflow-hidden hover:bg-surface-container-high transition-all">
+                  <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-[#FFB83F]/10 rounded-full blur-xl pointer-events-none"></div>
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-lg bg-[#FFB83F]/20 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[18px] text-[#FFB83F]" style={{ fontVariationSettings: "'FILL' 1" }}>sentiment_satisfied</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps text-[#19D69B] px-1.5 py-0.5 rounded-full bg-[#19D69B]/10">94%</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline space-x-1">
+                      <span class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">Good</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Mental State</p>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Health Trends Card with Inline Sparkline & Mission Risk Tag */}
+              <Link to="/activity" class="flex flex-col p-4 rounded-xl bg-surface-container shadow-md space-y-3 block hover:bg-surface-container-high transition-colors">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="font-headline-md text-headline-md font-semibold text-on-surface">Health Trends</span>
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant">chevron_right</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#19D69B]/15 text-[#19D69B] shadow-[0_0_12px_rgba(25,214,155,0.2)]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#19D69B]"></span>
+                    <span class="font-label-caps text-label-caps font-semibold">Mission Risk: Low</span>
+                  </div>
+                </div>
+                <div class="relative w-full h-24 pt-2">
+                  <svg class="w-full h-full overflow-visible" fill="none" preserveAspectRatio="none" viewBox="0 0 320 80">
+                    <defs>
+                      <linearGradient id="neonTrendGradHome" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stopColor="#6ed2ff" stopOpacity="0.3"></stop>
+                        <stop offset="100%" stopColor="#6ed2ff" stopOpacity="0.0"></stop>
+                      </linearGradient>
+                      <linearGradient id="lineGlowHome" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stopColor="#448fff"></stop>
+                        <stop offset="50%" stopColor="#6ed2ff"></stop>
+                        <stop offset="100%" stopColor="#907eff"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path d="M 0,55 Q 35,40 70,48 T 140,32 T 210,42 T 280,20 L 320,28 L 320,80 L 0,80 Z" fill="url(#neonTrendGradHome)"></path>
+                    <line stroke="#414754" strokeDasharray="3 3" strokeWidth="0.75" x1="0" x2="320" y1="40" y2="40"></line>
+                    <path d="M 0,55 Q 35,40 70,48 T 140,32 T 210,42 T 280,20 L 320,28" fill="none" stroke="url(#lineGlowHome)" strokeLinecap="round" strokeWidth="2.5"></path>
+                    <circle cx="70" cy="48" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="140" cy="32" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="210" cy="42" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="280" cy="20" fill="#dce2f9" r="4.5" stroke="#6ed2ff" strokeWidth="2"></circle>
+                    <circle class="animate-ping" cx="280" cy="20" fill="none" opacity="0.4" r="8" stroke="#6ed2ff" strokeWidth="1" style={{ transformOrigin: '280px 20px' }}></circle>
+                  </svg>
+                </div>
+                <div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm px-1">
+                  <span>Day 04</span>
+                  <span>Day 06</span>
+                  <span>Day 08</span>
+                  <span>Day 10</span>
+                  <span class="text-secondary font-medium">Day 12</span>
+                </div>
+              </Link>
+
+              {/* Recent Alerts Notification Card */}
+              <Link to="/notifications" class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container shadow-md hover:bg-surface-container-high transition-colors">
+                <div class="flex items-center space-x-3 min-w-0">
+                  <div class="w-9 h-9 rounded-xl bg-secondary-container/20 flex-shrink-0 flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined text-[20px]">schedule</span>
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-body-md text-body-md font-medium text-on-surface truncate">Mood measurement due</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    </div>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Scheduled window in 2 hours</span>
+                  </div>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap ml-2">2h ago</span>
+              </Link>
+
+              {/* Quick Action Mission Biometrics Banner */}
+              <div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-high shadow-md">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+                    <span class="material-symbols-outlined text-[22px]">vital_signs</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-body-md text-body-md font-semibold text-on-surface">Initiate Daily Biometric Sweep</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Takes ~45 seconds via wearable uplink</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleSweep}
+                  class={`px-3.5 py-1.5 rounded-full font-label-md text-label-md font-semibold transition-all active:scale-95 shadow-[0_0_12px_rgba(110,210,255,0.4)] ${
+                    swept ? "bg-[#19D69B] text-[#003923]" : "bg-secondary text-on-secondary-fixed hover:bg-secondary-fixed"
+                  }`}
+                >
+                  {swept ? "Completed" : "Start"}
+                </button>
+              </div>
+            </div>
+          </main>
+          <AppNav />
+        </div>
+      );
+    };
+
+    // SCREEN 10: Health Overview Hub
+    const HealthOverviewScreen = () => {
+      const navigate = useNavigate();
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Health" />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin">
+            <div class="flex flex-col w-full pb-6 space-y-space-md">
+              <div class="flex items-center justify-between pt-space-xs">
+                <div>
+                  <h2 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface font-bold tracking-tight">Health Monitoring</h2>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Track your health overview</p>
+                </div>
+                <div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-1 rounded-full shadow-inner">
+                  <span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                  <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest font-semibold">Live Sync</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between px-space-md py-space-sm bg-surface-container-low rounded-xl">
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">satellite_alt</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Artemis-2 Orbital Telemetry</span>
+                </div>
+                <span class="font-label-caps text-label-caps text-secondary-fixed bg-surface-container px-2 py-0.5 rounded-full font-bold">Orbital Day 12</span>
+              </div>
+
+              {/* 2x3 Grid to sub telemetry screens */}
+              <div class="grid grid-cols-2 gap-space-sm">
+                <button onClick={() => navigate('/heart-rate')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-error/10 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-error-container/40 flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(255,83,101,0.25)]">
+                    <span class="material-symbols-outlined text-error text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Heart Rate</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">72 bpm • Nominal</span>
+                </button>
+
+                <button onClick={() => navigate('/blood-pressure')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-secondary/10 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-secondary-container/30 flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(110,210,255,0.25)]">
+                    <span class="material-symbols-outlined text-secondary text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>water_drop</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Blood Pressure</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">118/76 mmHg</span>
+                </button>
+
+                <button onClick={() => navigate('/sleep')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-tertiary/10 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-tertiary-container/30 flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(200,191,255,0.25)]">
+                    <span class="material-symbols-outlined text-tertiary text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>bedtime</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Sleep</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">7.8 hrs • 92%</span>
+                </button>
+
+                <button onClick={() => navigate('/measurement-guide')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-primary-container/30 flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(171,199,255,0.25)]">
+                    <span class="material-symbols-outlined text-primary text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>mood</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Mood</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">Calm • Balanced</span>
+                </button>
+
+                <button onClick={() => navigate('/radiation-risk')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-secondary-fixed-dim/10 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(110,210,255,0.15)]">
+                    <span class="material-symbols-outlined text-secondary-fixed text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Stress</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">Low Level • 18%</span>
+                </button>
+
+                <button onClick={() => navigate('/activity')} class="group relative flex flex-col items-center justify-center p-space-md bg-surface-container-high rounded-xl text-center active:scale-[0.98] transition-transform overflow-hidden shadow-sm hover:shadow-md" type="button">
+                  <div class="absolute inset-0 bg-gradient-to-b from-secondary/15 via-transparent to-transparent opacity-60"></div>
+                  <div class="relative w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-space-sm shadow-[0_0_16px_rgba(110,210,255,0.2)]">
+                    <span class="material-symbols-outlined text-secondary text-[26px]" style={{ fontVariationSettings: "'FILL' 1" }}>sprint</span>
+                  </div>
+                  <span class="relative font-headline-md text-headline-md text-on-surface font-semibold">Activity</span>
+                  <span class="relative font-body-sm text-body-sm text-on-surface-variant mt-0.5">6.2 km • 45m Erg</span>
+                </button>
+              </div>
+
+              {/* Overall Health Status Card */}
+              <div class="relative overflow-hidden rounded-xl bg-surface-container-high p-space-md shadow-md">
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex items-center justify-between mb-space-sm">
+                  <span class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Overall Health</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Automated Index</span>
+                </div>
+                <div class="flex items-center gap-space-sm mb-space-sm">
+                  <div class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-secondary shadow-[0_0_12px_rgba(110,210,255,0.4)]">
+                    <span class="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+                  </div>
+                  <span class="font-headline-lg text-headline-lg font-bold text-on-surface">Excellent</span>
+                  <span class="ml-auto font-label-caps text-label-caps bg-surface-container text-secondary px-2.5 py-1 rounded-full font-semibold">98.4 SCORE</span>
+                </div>
+                <div class="relative w-full h-14 my-space-xs overflow-hidden flex items-center">
+                  <svg class="w-full h-full text-secondary" fill="none" preserveAspectRatio="none" viewBox="0 0 340 50">
+                    <defs>
+                      <linearGradient id="ecgGlow2" x1="0%" x2="100%" y1="0%" y2="0%">
+                        <stop offset="0%" stopColor="#448fff" stopOpacity="0.2"></stop>
+                        <stop offset="45%" stopColor="#6ed2ff" stopOpacity="0.9"></stop>
+                        <stop offset="55%" stopColor="#bfe8ff" stopOpacity="1"></stop>
+                        <stop offset="100%" stopColor="#6ed2ff" stopOpacity="0.3"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path d="M0,25 L40,25 L50,23 L58,25 L75,25 L85,10 L95,42 L105,4 L115,35 L125,25 L160,25 L170,22 L178,25 L195,25 L205,10 L215,42 L225,4 L235,35 L245,25 L280,25 L290,23 L298,25 L340,25" stroke="url(#ecgGlow2)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2"></path>
+                  </svg>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  All biometric systems within optimal nominal parameters for microgravity environment. Zero critical variance detected.
+                </p>
+                <div class="mt-space-md pt-space-sm flex items-center justify-between border-t border-surface-container-highest/40">
+                  <div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">update</span>
+                    <span>Telemetry refreshed 42s ago</span>
+                  </div>
+                  <Link to="/activity" class="inline-flex items-center gap-1 font-label-md text-label-md text-secondary font-semibold hover:text-secondary-fixed transition-colors">
+                    <span>Run Full Biome</span>
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* AI Medical Officer Note */}
+              <div class="relative overflow-hidden rounded-xl bg-surface-container-high p-space-md">
+                <div class="flex items-center justify-between mb-space-sm">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-primary text-[20px]">smart_toy</span>
+                    <span class="font-headline-md text-headline-md text-on-surface font-semibold">AI Medical Officer Note</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full">ASTRA-Core</span>
+                </div>
+                <div class="flex items-start gap-space-md">
+                  <img class="w-16 h-16 rounded-lg object-cover flex-shrink-0 bg-surface-container-highest shadow-sm" alt="Futuristic holographic medical pod" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfAfHdb-pIqSlRonjnnU3X8kw3ns5hkyKZuzRXTk3Y_0gZdl_oRLqSdE7yrMyIDoDrwyc0CCgCo2XB2X3BqLEhI-rULRmG-E0cCPZ0cVONkovF6f4J2z3GM5vCUQ8pC_DOXozZ5jGnDEU7_-bImeegbmKi5QKWdy-lEOQVd5EnHqN2hjn5D_21_TUP4yRPXgP_BvWC3MELvVq50dit6Kv3L3myrynIJowjG2f5ZeFh"/>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-body-md text-body-md text-on-surface font-medium truncate">Cardiovascular Equilibrium</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">
+                      Resting heart rate decreased 4 bpm over the last 48 hours following circadian light alignment cycle.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <AppNav />
+        </div>
+      );
+    };
+
+    // SCREEN 7: Risk Assessment Screen
+    const RiskAssessmentScreen = () => {
+      const navigate = useNavigate();
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Mission Risks" />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin">
+            <div class="flex flex-col w-full pb-6 space-y-space-md">
+              <div class="flex items-center justify-between bg-surface-container-high/60 backdrop-blur-md px-margin py-space-sm rounded-xl">
+                <div class="flex items-center gap-space-sm">
+                  <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                  </span>
+                  <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary font-semibold">Artemis-2 Telemetry</span>
+                </div>
+                <div class="flex items-center gap-space-xs bg-surface-container-lowest/80 px-2.5 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-[13px] text-primary">satellite_alt</span>
+                  <span>Orion DeepLink 48 Gbps</span>
+                </div>
+              </div>
+
+              {/* Hero: Overall Mission Health & Biological Risk Level */}
+              <div class="relative overflow-hidden rounded-xl bg-gradient-to-b from-surface-container-high/90 via-surface-container/90 to-surface-container-low/95 p-space-md shadow-xl">
+                <div class="absolute -right-8 -top-10 w-44 h-44 rounded-full bg-secondary/10 blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col space-y-space-md">
+                  <div class="flex items-center justify-between">
+                    <div class="flex flex-col">
+                      <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Biomedical Telemetry Matrix</span>
+                      <h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Mission Risk Assessment</h2>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-surface-container-lowest/80 px-2.5 py-1 rounded-full font-label-sm text-label-sm text-secondary-fixed">
+                      <span class="material-symbols-outlined text-[14px]">history</span>
+                      <span>Sync T-00:04m</span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-space-md bg-surface-container-lowest/60 rounded-xl p-space-md">
+                    <div class="relative flex items-center justify-center flex-shrink-0">
+                      <div class="w-16 h-16 rounded-full bg-secondary/15 flex items-center justify-center shadow-[0_0_20px_rgba(110,210,255,0.25)]">
+                        <span class="material-symbols-outlined text-secondary text-[36px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
+                      </div>
+                      <svg class="absolute -inset-1 w-[72px] h-[72px] -rotate-90">
+                        <circle class="text-surface-container-highest" cx="36" cy="36" fill="transparent" r="32" stroke="currentColor" strokeWidth="2"></circle>
+                        <circle class="text-secondary" cx="36" cy="36" fill="transparent" r="32" stroke="currentColor" strokeDasharray="201" strokeDashoffset="30" strokeLinecap="round" strokeWidth="3"></circle>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col min-w-0 flex-1">
+                      <div class="flex items-center gap-2">
+                        <span class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-surface leading-tight">Low Risk</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-secondary/20 text-secondary">
+                          96.4% Safe
+                        </span>
+                      </div>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">
+                        All 5 biosystems within NASA flight margins
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-space-sm pt-1">
+                    <div class="flex flex-col bg-surface-container-high/50 p-2.5 rounded-lg">
+                      <div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+                        <span class="material-symbols-outlined text-[14px] text-secondary">explore</span>
+                        <span>Orbital Apogee</span>
+                      </div>
+                      <span class="font-headline-md text-headline-md font-semibold text-on-surface mt-0.5">384,400 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">km</span></span>
+                    </div>
+                    <div class="flex flex-col bg-surface-container-high/50 p-2.5 rounded-lg">
+                      <div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+                        <span class="material-symbols-outlined text-[14px] text-tertiary">nest_clock_farsight_analog</span>
+                        <span>Mission Timeline</span>
+                      </div>
+                      <span class="font-headline-md text-headline-md font-semibold text-on-surface mt-0.5">Day 12 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/ 21</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Threat Vectors list */}
+              <div class="flex flex-col space-y-space-sm">
+                <div class="flex items-center justify-between px-space-xs">
+                  <h3 class="font-headline-md text-headline-md font-semibold text-on-surface tracking-tight">Biomedical Threat Vectors</h3>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant">5 Active Sensors</span>
+                </div>
+
+                <Link to="/radiation-risk" class="group flex items-center justify-between p-space-md rounded-xl bg-surface-container transition-all active:scale-[0.99] hover:bg-surface-container-high shadow-sm">
+                  <div class="flex items-center gap-space-md min-w-0">
+                    <div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-secondary-fixed">
+                      <span class="material-symbols-outlined text-[24px]">radiology</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Space Radiation</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant truncate">0.15 mSv/h · Dosimeter Nominal</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-secondary/15 text-secondary">Low</span>
+                    <span class="material-symbols-outlined text-outline text-[18px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+                  </div>
+                </Link>
+
+                <div class="group flex items-center justify-between p-space-md rounded-xl bg-surface-container transition-all hover:bg-surface-container-high shadow-sm">
+                  <div class="flex items-center gap-space-md min-w-0">
+                    <div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-primary">
+                      <span class="material-symbols-outlined text-[24px]">fitness_center</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Microgravity Load</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Musculoskeletal Index 94.2%</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-secondary/15 text-secondary">Low</span>
+                    <span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+                  </div>
+                </div>
+
+                <div class="group flex items-center justify-between p-space-md rounded-xl bg-surface-container transition-all hover:bg-surface-container-high shadow-sm">
+                  <div class="flex items-center gap-space-md min-w-0">
+                    <div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-tertiary">
+                      <span class="material-symbols-outlined text-[24px]">bedtime</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">Isolation &amp; Sleep</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Circadian drift +20m · REM stable</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-tertiary/20 text-tertiary">Moderate</span>
+                    <span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+                  </div>
+                </div>
+
+                <div class="group flex items-center justify-between p-space-md rounded-xl bg-surface-container transition-all hover:bg-surface-container-high shadow-sm">
+                  <div class="flex items-center gap-space-md min-w-0">
+                    <div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-secondary">
+                      <span class="material-symbols-outlined text-[24px]">air</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-body-lg text-body-lg font-semibold text-on-surface truncate">ECLSS Environment</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant truncate">O2 / CO2 scrubbers optimal 99.4%</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold bg-secondary/15 text-secondary">Low</span>
+                    <span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Shield Status Widget */}
+              <div class="relative overflow-hidden rounded-xl bg-surface-container-high/80 p-space-md flex flex-col space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-space-sm">
+                    <div class="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+                      <span class="material-symbols-outlined text-[18px]">shield</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Radiation Shield</span>
+                      <span class="font-headline-md text-headline-md font-semibold text-on-surface">Hull Integrity 98.7%</span>
+                    </div>
+                  </div>
+                  <span class="font-label-sm text-label-sm font-semibold text-secondary bg-surface-container-lowest px-2 py-0.5 rounded-full">Nominal</span>
+                </div>
+                <div class="w-full flex items-center gap-1.5 pt-1">
+                  <div class="h-2 flex-1 rounded-full bg-secondary"></div>
+                  <div class="h-2 flex-1 rounded-full bg-secondary"></div>
+                  <div class="h-2 flex-1 rounded-full bg-secondary"></div>
+                  <div class="h-2 flex-1 rounded-full bg-secondary"></div>
+                  <div class="h-2 flex-1 rounded-full bg-secondary/40"></div>
+                </div>
+                <div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-0.5">
+                  <span>Storm Shelter Active</span>
+                  <span>SPE Shielding: +45 mm Al Eq</span>
+                </div>
+              </div>
+
+              <div class="pt-space-xs">
+                <button 
+                  onClick={() => navigate('/radiation-risk')}
+                  class="w-full flex items-center justify-center gap-space-sm py-3.5 px-space-md rounded-full bg-primary-container text-on-primary-container font-headline-md text-headline-md font-semibold shadow-lg hover:opacity-95 active:scale-[0.98] transition-all"
+                >
+                  <span>View Detailed Risk Telemetry</span>
+                  <span class="material-symbols-outlined text-[20px]">analytics</span>
+                </button>
+              </div>
+            </div>
+          </main>
+          <AppNav />
+        </div>
+      );
+    };
+
+    // SCREEN 4: Radiation Risk Detail Screen
+    const RadiationRiskScreen = () => {
+      const [downloaded, setDownloaded] = useState(false);
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Radiation Risk" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-4">
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#6ed2ff]"></span>
+                  <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">Orbital Dosimetry Sensor • Bay 4</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded-full">Updated 14s ago</span>
+              </div>
+
+              {/* Hero Card */}
+              <div class="relative overflow-hidden rounded-xl bg-surface-container p-space-md shadow-md">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-secondary/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                  <div class="relative w-44 h-44 my-1 flex items-center justify-center">
+                    <img alt="Cosmic radiation hazard sensor telemetry" class="w-full h-full object-cover rounded-full shadow-[0_0_30px_rgba(255,184,63,0.25)]" src="https://lh3.googleusercontent.com/aida/ALJJyrBKxhaaF-B8Y6w8Svy5597F938C_x1Xq9K9gPuf8Fy9tc-tGn5EboP8sn-4xC6zaw8xd7QrAo96paypUluV_8V3v1BHe7bFav5gdDg3s6z83AkQ9rK6tLWpogEPYNyxG7nYvAmBWTt7YiI1WylZSTj2U1jknomuFhI5F5UeAEh9USbQRvr_z9_JQDjZz0l5U2cnEZEazIKamBSiDls9MbxuVisMmOSdRp9hUI2_lvbi"/>
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-t from-surface-container-lowest/80 via-transparent to-surface-container-lowest/20 flex flex-col items-center justify-end pb-3">
+                      <div class="p-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-sm">
+                        <span class="material-symbols-outlined text-[20px] text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>swipe_vertical</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Radiation Risk: Low</h2>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-[280px]">
+                    Current cosmic exposure is stable and safely within normal operational bio-limits.
+                  </p>
+                  <div class="w-full mt-4 p-3 rounded-lg bg-surface-container-low flex items-center justify-between">
+                    <div class="text-left">
+                      <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block">Active Influx</span>
+                      <div class="flex items-baseline gap-1">
+                        <span class="font-metric-display text-metric-display text-secondary tracking-tight">0.15</span>
+                        <span class="font-label-md text-label-md text-on-surface-variant">mSv/h</span>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block">Flight Safety Ceiling</span>
+                      <span class="font-headline-md text-headline-md text-on-surface">1.00 <span class="font-label-sm text-label-sm text-on-surface-variant">mSv/h</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Exposure Trend Chart */}
+              <div class="rounded-xl bg-surface-container p-space-md shadow-md space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">show_chart</span>
+                    <span class="font-headline-md text-headline-md text-on-surface">Exposure Trend</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-2 py-0.5 rounded-full">Flight Week 03</span>
+                </div>
+                <div class="relative w-full pt-2">
+                  <div class="flex items-center justify-between mb-1 text-on-surface-variant font-label-caps text-label-caps opacity-60">
+                    <span>CEILING: 1.0 mSv/h</span>
+                    <span>PEAK: 0.22 mSv/h</span>
+                  </div>
+                  <svg class="w-full h-24 overflow-visible" fill="none" viewBox="0 0 320 80">
+                    <defs>
+                      <linearGradient id="chartGradientRad" x1="0" x2="0" y1="0" y2="80">
+                        <stop stopColor="#6ed2ff" stopOpacity="0.35"></stop>
+                        <stop offset="100%" stopColor="#6ed2ff" stopOpacity="0.0"></stop>
+                      </linearGradient>
+                      <linearGradient id="lineGlowRad" x1="0" x2="320" y1="0" y2="0">
+                        <stop stopColor="#abc7ff"></stop>
+                        <stop offset="60%" stopColor="#6ed2ff"></stop>
+                        <stop offset="100%" stopColor="#448fff"></stop>
+                      </linearGradient>
+                    </defs>
+                    <line opacity="0.6" stroke="#414754" strokeDasharray="4 4" strokeWidth="1" x1="0" x2="320" y1="18" y2="18"></line>
+                    <path d="M 0 55 Q 53 45 106 60 T 212 40 T 320 50 L 320 80 L 0 80 Z" fill="url(#chartGradientRad)"></path>
+                    <path d="M 0 55 Q 53 45 106 60 T 212 40 T 320 50" fill="none" stroke="url(#lineGlowRad)" strokeLinecap="round" strokeWidth="2.5"></path>
+                    <circle cx="0" cy="55" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="53" cy="50" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="106" cy="60" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="160" cy="46" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="212" cy="40" fill="#dce2f9" r="4" stroke="#00b9ef" strokeWidth="2"></circle>
+                    <circle cx="266" cy="52" fill="#6ed2ff" r="3"></circle>
+                    <circle cx="320" cy="50" fill="#6ed2ff" r="3"></circle>
+                  </svg>
+                  <div class="flex justify-between items-center text-on-surface-variant font-label-caps text-label-caps pt-1.5">
+                    <span>MON</span>
+                    <span>TUE</span>
+                    <span>WED</span>
+                    <span>THU</span>
+                    <span class="text-secondary font-semibold">FRI</span>
+                    <span>SAT</span>
+                    <span>SUN</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3 Metrics */}
+              <div class="grid grid-cols-3 gap-2">
+                <div class="rounded-xl bg-surface-container p-3 flex flex-col justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-2">
+                    <span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+                  </div>
+                  <div>
+                    <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block truncate">Mission Dose</span>
+                    <span class="font-headline-md text-headline-md text-on-surface">1.82</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block">mSv Total</span>
+                  </div>
+                </div>
+                <div class="rounded-xl bg-surface-container p-3 flex flex-col justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary mb-2">
+                    <span class="material-symbols-outlined text-[16px]">wb_twilight</span>
+                  </div>
+                  <div>
+                    <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block truncate">Solar Flare</span>
+                    <span class="font-headline-md text-headline-md text-secondary">Clear</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block">No Influx</span>
+                  </div>
+                </div>
+                <div class="rounded-xl bg-surface-container p-3 flex flex-col justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary-container mb-2">
+                    <span class="material-symbols-outlined text-[16px]">shield</span>
+                  </div>
+                  <div>
+                    <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block truncate">Shield Grid</span>
+                    <span class="font-headline-md text-headline-md text-on-surface">94%</span>
+                    <span class="font-label-sm text-label-sm text-secondary block">Deflection</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Directives */}
+              <div class="rounded-xl bg-surface-container p-space-md shadow-md space-y-3">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[18px] text-primary">security</span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">Spacecraft Protocol Directives</h3>
+                </div>
+                <div class="space-y-2.5">
+                  <div class="flex items-start gap-3 bg-surface-container-low p-2.5 rounded-lg">
+                    <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    <p class="font-body-sm text-body-sm text-on-surface">Follow standard EVA solar storm protocols prior to airlock depressurization.</p>
+                  </div>
+                  <div class="flex items-start gap-3 bg-surface-container-low p-2.5 rounded-lg">
+                    <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    <p class="font-body-sm text-body-sm text-on-surface">Limit continuous recreational observation in unshielded Cupola quadrant (&lt;45 min/day).</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Controls */}
+              <div class="flex flex-col gap-2 pt-2">
+                <button 
+                  onClick={() => { setDownloaded(true); setTimeout(() => setDownloaded(false), 2000); }}
+                  class="w-full py-3 px-4 rounded-full bg-primary-container text-on-primary font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(68,143,255,0.3)] active:scale-[0.98] transition-transform"
+                >
+                  <span class="material-symbols-outlined text-[20px]">{downloaded ? "check" : "download"}</span>
+                  <span>{downloaded ? "Telemetry Exported" : "Download Telemetry Log"}</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 12: Heart Rate Screen
+    const HeartRateScreen = () => {
+      const navigate = useNavigate();
+      const [timeframe, setTimeframe] = useState("1D");
+      const [measuring, setMeasuring] = useState(false);
+      const [bpm, setBpm] = useState(72);
+
+      const triggerMeasurement = () => {
+        if (measuring) return;
+        setMeasuring(true);
+        let counter = 0;
+        const interval = setInterval(() => {
+          setBpm(Math.floor(68 + Math.random() * 8));
+          counter++;
+          if (counter >= 8) {
+            clearInterval(interval);
+            setBpm(74);
+            setMeasuring(false);
+          }
+        }, 200);
+      };
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Heart Rate" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-4">
+              {/* Biometric Hero Gauge */}
+              <section class="relative w-full rounded-xl bg-surface-container/90 backdrop-blur-xl p-space-md flex flex-col items-center justify-center overflow-hidden shadow-xl">
+                <div class="absolute -top-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div class="relative w-52 h-52 flex items-center justify-center my-2">
+                  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 160 160">
+                    <circle class="text-surface-container-highest" cx="80" cy="80" fill="none" r="68" stroke="currentColor" strokeWidth="7"></circle>
+                    <circle class="transition-all duration-1000 ease-out" cx="80" cy="80" fill="none" r="68" stroke="url(#cyanElectricGradHR)" strokeDasharray="427" strokeDashoffset={measuring ? "80" : "135"} strokeLinecap="round" strokeWidth="7"></circle>
+                    <defs>
+                      <linearGradient id="cyanElectricGradHR" x1="0%" x2="100%" y1="0%" y2="100%">
+                        <stop offset="0%" stopColor="#abc7ff"></stop>
+                        <stop offset="60%" stopColor="#6ed2ff"></stop>
+                        <stop offset="100%" stopColor="#00b9ef"></stop>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
+                    <div class="relative flex items-center justify-center mb-1">
+                      <span class="material-symbols-outlined text-error text-[28px] animate-pulse" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                      <span class="absolute w-7 h-7 rounded-full bg-error/20 animate-ping"></span>
+                    </div>
+                    <div class="flex items-baseline space-x-1">
+                      <span class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">{bpm}</span>
+                      <span class="font-label-md text-label-md text-on-surface-variant font-medium lowercase">bpm</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-0.5">Telemetry</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-2 px-space-md py-1.5 rounded-full bg-surface-container-high shadow-inner">
+                  <span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#6ed2ff]"></span>
+                  <span class="font-label-md text-label-md text-on-surface font-semibold">Normal Range</span>
+                  <span class="text-outline-variant font-body-sm text-body-sm">•</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">60 – 100 bpm</span>
+                </div>
+              </section>
+
+              {/* Trendline Section */}
+              <section class="w-full rounded-xl bg-surface-container/90 backdrop-blur-xl p-space-md shadow-md flex flex-col space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">show_chart</span>
+                    <span class="font-headline-md text-headline-md text-on-surface">Trendline</span>
+                  </div>
+                  <div class="inline-flex p-0.5 rounded-full bg-surface-container-lowest">
+                    {["1D", "1W", "1M"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setTimeframe(tab)}
+                        class={`px-3 py-1 rounded-full font-label-sm text-label-sm transition-all ${
+                          timeframe === tab ? "bg-primary-container text-on-primary-container font-semibold shadow-sm" : "text-on-surface-variant hover:text-on-surface"
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="relative w-full h-36 pt-2">
+                  <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 320 120">
+                    <defs>
+                      <linearGradient id="areaGradientHR" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stopColor="#6ed2ff" stopOpacity="0.32"></stop>
+                        <stop offset="100%" stopColor="#6ed2ff" stopOpacity="0.0"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path d="M 10,75 C 50,85 70,35 110,50 C 150,65 170,95 210,65 C 250,35 280,70 310,45 L 310,120 L 10,120 Z" fill="url(#areaGradientHR)"></path>
+                    <path d="M 10,75 C 50,85 70,35 110,50 C 150,65 170,95 210,65 C 250,35 280,70 310,45" fill="none" stroke="#6ed2ff" strokeWidth="2.5"></path>
+                    <circle cx="10" cy="75" fill="#abc7ff" r="3.5"></circle>
+                    <circle cx="110" cy="50" fill="#abc7ff" r="3.5"></circle>
+                    <circle cx="210" cy="65" fill="#6ed2ff" r="4.5"></circle>
+                    <circle cx="310" cy="45" fill="#6ed2ff" r="3.5"></circle>
+                  </svg>
+                </div>
+
+                <div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm px-1 pt-1 select-none">
+                  <span>00:00</span>
+                  <span>06:00</span>
+                  <span>12:00</span>
+                  <span>18:00</span>
+                  <span class="text-secondary font-semibold">Now</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 pt-2">
+                  <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-container-low">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Min</span>
+                    <span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">58 bpm</span>
+                  </div>
+                  <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-container-low">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Avg</span>
+                    <span class="font-headline-md text-headline-md text-secondary font-semibold mt-0.5">72 bpm</span>
+                  </div>
+                  <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-container-low">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Max</span>
+                    <span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">94 bpm</span>
+                  </div>
+                </div>
+              </section>
+
+              {/* Connected Smartwatch Card */}
+              <Link to="/measurement-guide" class="w-full rounded-xl bg-surface-container/90 backdrop-blur-xl p-space-md shadow-md flex items-center justify-between hover:bg-surface-container-high transition-colors">
+                <div class="flex items-center space-x-3 min-w-0">
+                  <div class="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container-highest flex items-center justify-center shadow-inner">
+                    <img class="w-full h-full object-cover" alt="Tactical smartwatch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9J90SQaAP5QIpxA9IUX8W8XhroKJ6hyLc0JP5Z39m97xQ926aStHS5KZNaltBr57FBAtKJnwBdMp48HjAzEHbC6GovYDV6URJY3REa2kwlhvvrt15_kpV1t74YtwRxotZuDvL1ead3yTEbY4jPbphHBo46XeCCwjSuRqtwTNSwGHFDqKFb4_GBRgqVoBZKAb4Xfn4CoQk2ar_A8ATRUCKRHoHESbZMfSPe4lYCzxx"/>
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-label-md text-label-md text-on-surface font-semibold truncate">BioSensor Artemis-V2</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+                    </div>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Sensor protocol available • Step guide</span>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-1 text-secondary flex-shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                </div>
+              </Link>
+
+              {/* Action */}
+              <div class="w-full pt-2">
+                <button 
+                  onClick={triggerMeasurement}
+                  class="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-primary-container to-secondary flex items-center justify-center space-x-2 text-on-primary font-headline-md text-headline-md font-semibold tracking-wide shadow-[0_4px_20px_rgba(68,143,255,0.4)] hover:opacity-95 active:scale-[0.98] transition-all"
+                >
+                  <span class={`material-symbols-outlined text-[22px] ${measuring ? "animate-spin" : ""}`}>cardiology</span>
+                  <span>{measuring ? "Scanning PPG Telemetry..." : "Measure Heart Rate"}</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 11: Blood Pressure Screen
+    const BloodPressureScreen = () => {
+      const [timeframe, setTimeframe] = useState("1D");
+      const [sampling, setSampling] = useState(false);
+
+      const triggerCuff = () => {
+        setSampling(true);
+        setTimeout(() => setSampling(false), 2000);
+      };
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Blood Pressure" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-space-md">
+              <div class="w-full bg-surface-container rounded-xl overflow-hidden shadow-lg flex flex-col">
+                <div class="relative w-full h-52 bg-surface-container-lowest overflow-hidden flex items-center justify-center">
+                  <img class="w-full h-full object-cover object-center" alt="Aerospace digital blood pressure monitor" src="https://lh3.googleusercontent.com/aida/ALJJyrBY_l7P12E53P63g2wY-7013qO7gV6r2E3CjD68x40_j52sZzL3B3z_01mYmG0oP8zT114E156D24A"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent"></div>
+                  <div class="absolute top-space-sm right-space-sm flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                    </span>
+                    <span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">AuraFlow Link</span>
+                  </div>
+                </div>
+
+                <div class="px-space-md pt-space-xs pb-space-md flex flex-col items-center text-center">
+                  <div class="flex items-baseline justify-center gap-space-xs">
+                    <span class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">118 / 76</span>
+                    <span class="font-label-md text-label-md text-secondary font-medium">mmHg</span>
+                  </div>
+                  <div class="mt-space-xs inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest shadow-sm">
+                    <span class="material-symbols-outlined text-[15px] text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    <span class="font-label-md text-label-md text-on-surface font-semibold">Normal</span>
+                    <span class="text-on-surface-variant text-[11px]">• Arterial Tension Optimal</span>
+                  </div>
+                  <div class="w-full grid grid-cols-3 gap-space-xs mt-space-md pt-space-sm bg-surface-container-low rounded-lg p-space-sm">
+                    <div class="flex flex-col items-center">
+                      <span class="font-label-sm text-label-sm text-on-surface-variant">Systolic</span>
+                      <span class="font-headline-md text-headline-md text-secondary font-bold mt-0.5">118</span>
+                      <span class="font-label-caps text-[9px] text-on-surface-variant">&lt; 120 mm</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span class="font-label-sm text-label-sm text-on-surface-variant">Diastolic</span>
+                      <span class="font-headline-md text-headline-md text-primary font-bold mt-0.5">76</span>
+                      <span class="font-label-caps text-[9px] text-on-surface-variant">&lt; 80 mm</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span class="font-label-sm text-label-sm text-on-surface-variant">Pulse Rate</span>
+                      <div class="flex items-center gap-1 mt-0.5">
+                        <span class="material-symbols-outlined text-[16px] text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                        <span class="font-headline-md text-headline-md text-tertiary font-bold">72</span>
+                      </div>
+                      <span class="font-label-caps text-[9px] text-on-surface-variant">bpm</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trend Card */}
+              <div class="w-full bg-surface-container rounded-xl p-space-md shadow-md flex flex-col space-y-space-md">
+                <div class="flex items-center justify-between">
+                  <div class="flex flex-col">
+                    <span class="font-headline-md text-headline-md text-on-surface">Pressure Dynamics</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">24-hour comparative cycles</span>
+                  </div>
+                  <div class="flex items-center bg-surface-container-lowest p-1 rounded-full space-x-1">
+                    {["1D", "1W", "1M"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setTimeframe(tab)}
+                        class={`px-2.5 py-1 rounded-full font-label-sm text-label-sm transition-all ${
+                          timeframe === tab ? "bg-primary-container text-on-primary-container font-semibold" : "text-on-surface-variant hover:text-on-surface"
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="relative w-full h-44 bg-surface-container-low rounded-lg p-2.5 flex flex-col justify-between overflow-hidden">
+                  <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 320 120">
+                    <line stroke="#414754" strokeDasharray="3 3" strokeOpacity="0.4" x1="0" x2="320" y1="20" y2="20"></line>
+                    <line stroke="#414754" strokeDasharray="3 3" strokeOpacity="0.4" x1="0" x2="320" y1="50" y2="50"></line>
+                    <line stroke="#414754" strokeDasharray="3 3" strokeOpacity="0.4" x1="0" x2="320" y1="85" y2="85"></line>
+                    
+                    <path d="M 10 55 C 40 50, 50 48, 60 48 C 80 48, 100 62, 120 58 C 145 52, 165 42, 180 45 C 200 48, 225 56, 240 52 C 260 48, 275 44, 290 46 L 315 50" fill="none" stroke="#6ed2ff" strokeLinecap="round" strokeWidth="2.5"></path>
+                    <path d="M 10 92 C 40 89, 50 88, 60 88 C 80 88, 100 97, 120 95 C 145 92, 165 82, 180 84 C 200 86, 225 90, 240 88 C 260 85, 275 80, 290 82 L 315 86" fill="none" stroke="#448fff" strokeLinecap="round" strokeWidth="2"></path>
+                    
+                    <circle cx="290" cy="46" fill="#6ed2ff" r="4"></circle>
+                    <circle cx="290" cy="82" fill="#448fff" r="3.5"></circle>
+                  </svg>
+                  <div class="w-full flex justify-between px-1 text-on-surface-variant font-label-caps text-[9px] pt-1">
+                    <span>02:00</span>
+                    <span>06:00</span>
+                    <span>10:00</span>
+                    <span>14:00</span>
+                    <span>18:00</span>
+                    <span>NOW</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full pt-space-xs flex flex-col space-y-space-sm">
+                <button 
+                  onClick={triggerCuff}
+                  class="w-full py-3.5 px-space-md rounded-full bg-primary-container hover:bg-primary text-on-primary-container font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]"
+                >
+                  <span class={`material-symbols-outlined text-[20px] ${sampling ? "animate-spin" : ""}`}>
+                    {sampling ? "refresh" : "add_chart"}
+                  </span>
+                  <span>{sampling ? "Inflating Cuff Sensor..." : "Record New Reading"}</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 9: Sleep Telemetry Screen
+    const SleepScreen = () => {
+      const [calibrated, setCalibrated] = useState(false);
+      const [calibrating, setCalibrating] = useState(false);
+
+      const handleCalibrate = () => {
+        setCalibrating(true);
+        setTimeout(() => {
+          setCalibrating(false);
+          setCalibrated(true);
+        }, 1200);
+      };
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Sleep Telemetry" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-4">
+              <div class="relative w-full rounded-2xl overflow-hidden bg-surface-container shadow-xl">
+                <div class="relative w-full aspect-[16/9] max-h-52 overflow-hidden">
+                  <img alt="Sleep pod" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ALJJyrByhjDPQFApWZ3YFneUDeBicvuAfc2ADJAOQ4sUPVzTbEQDog2f3BP8bYslm223Pl1g3IHbreCsQQAtDRIyZspza0KIt-JlsK_z8_6HKy8AXrGnDqTTHB2UsOKeaMF4uoPGkFS8l_D04e7WPhFLlsiZ8s3o_hwz4wiqH9QMQhk2rP4zrhnWmGusBXTiXyy2QY6wr7OHUji8kKBsoDoqPf6B9OlUW21zvKmQFzLfU_38sQ"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/30 to-transparent"></div>
+                  <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_currentColor] animate-pulse"></span>
+                    <span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Pod-04 • Active Reg</span>
+                  </div>
+                  <div class="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+                    <span class="material-symbols-outlined text-[13px] text-tertiary">air</span>
+                    <span class="font-label-sm text-label-sm text-on-surface">O₂ 21.4 kPa</span>
+                  </div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                    <div>
+                      <span class="font-label-caps text-label-caps uppercase text-on-surface-variant block">Rest State</span>
+                      <span class="font-headline-md text-headline-md text-on-surface font-semibold">Circadian Stabilization</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-secondary bg-surface-container-high/90 backdrop-blur-md px-2.5 py-1 rounded-full">
+                      <span class="material-symbols-outlined text-[14px]">bedtime</span>
+                      <span class="font-label-sm text-label-sm font-semibold">Microgravity Stage IV</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bento Grid */}
+              <div class="grid grid-cols-2 gap-space-sm">
+                <div class="relative flex flex-col justify-between p-space-md rounded-2xl bg-surface-container shadow-md overflow-hidden">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                      <span class="material-symbols-outlined text-[18px]">bedtime</span>
+                    </div>
+                    <span class="font-label-caps text-label-caps font-bold text-secondary">92%</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline gap-1">
+                      <span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">7.8</span>
+                      <span class="font-headline-md text-headline-md text-primary font-medium">h</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant font-medium">Sleep Duration</p>
+                  </div>
+                </div>
+
+                <div class="relative flex flex-col justify-between p-space-md rounded-2xl bg-surface-container shadow-md overflow-hidden">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                      <span class="material-symbols-outlined text-[18px]">directions_run</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full bg-secondary/15 text-secondary font-label-caps text-label-caps uppercase font-semibold">T2 Erg</span>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex items-baseline gap-1">
+                      <span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">6.2</span>
+                      <span class="font-headline-md text-headline-md text-secondary font-medium">km</span>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface-variant font-medium">Physical Activity</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action */}
+              <div class="pt-1">
+                <button 
+                  onClick={handleCalibrate}
+                  class={`w-full h-12 rounded-full font-headline-md text-headline-md font-semibold flex items-center justify-center gap-2 transition-all ${
+                    calibrated ? "bg-surface-container-high text-secondary" : "bg-primary-container text-on-primary hover:bg-primary-container/90"
+                  }`}
+                >
+                  <span class={`material-symbols-outlined text-[20px] ${calibrating ? "animate-spin" : ""}`}>
+                    {calibrating ? "hourglass_empty" : (calibrated ? "check_circle" : "tune")}
+                  </span>
+                  <span>{calibrating ? "Synchronizing Telemetry..." : (calibrated ? "Pod-04 Calibrated (Optimal)" : "Calibrate Sleep Pod Pod-04")}</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 8: Step-by-Step Measurement Guide
+    const MeasurementGuideScreen = () => {
+      const navigate = useNavigate();
+      const [currentStep, setCurrentStep] = useState(1);
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Protocol Sync" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-4">
+              <div class="flex flex-col space-y-2 pt-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-secondary">
+                      <span class="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>vital_signs</span>
+                    </span>
+                    <span class="font-label-caps text-label-caps uppercase text-secondary tracking-widest">Protocol Sync</span>
+                  </div>
+                  <span class="font-label-md text-label-md text-on-surface-variant font-medium">Step {currentStep} of 3</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 w-full h-1.5">
+                  <div class={`h-full rounded-full ${currentStep >= 1 ? "bg-secondary-container" : "bg-surface-container-highest"}`}></div>
+                  <div class={`h-full rounded-full ${currentStep >= 2 ? "bg-secondary-container" : "bg-surface-container-highest"}`}></div>
+                  <div class={`h-full rounded-full ${currentStep >= 3 ? "bg-secondary-container" : "bg-surface-container-highest"}`}></div>
+                </div>
+              </div>
+
+              <div class="relative w-full rounded-xl overflow-hidden bg-surface-container-low shadow-xl">
+                <div class="relative aspect-square w-full max-h-[240px] overflow-hidden flex items-center justify-center">
+                  <img alt="Astronaut wrist measurement" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ws5INVSaBRo65To55Lj7WbXDSCX1BGVOJcX6RjwPe3j1ZwpRXTSg4gkCknnepjMtLFSEaaXEV6TX2shK2iZ5699pImdj5dklSWD_gTjJESyLoQ5ff93TB-lzO-s-w0o-5b-iqSJkrc8R_Xu7X3DLgcs5pidH0wKlJi70vYB4_jo7FpR2zlHqKYzvWa43rOaF8hGtRPiKAsFDKBa3QWJQNkm7IeAPqqvpbNS-VKBt"/>
+                  <div class="absolute top-3 right-3 flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+                    <span class="font-label-sm text-label-sm font-semibold tracking-wider text-secondary uppercase">Optical Lock</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col space-y-1">
+                <h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Measure Your Heart Rate</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Follow the guided biosensor protocol for mission telemetry sync.</p>
+              </div>
+
+              <div class="flex flex-col space-y-2.5">
+                {[
+                  { step: 1, title: "Wear your smartwatch snugly", desc: "Position 1-2 cm above the wrist bone" },
+                  { step: 2, title: "Ensure optimal sensor contact", desc: "Clean dry skin ensures high fidelity optical lock" },
+                  { step: 3, title: "Remain seated and keep still", desc: "Calibrate without movement for 30 seconds" }
+                ].map((item) => (
+                  <div 
+                    key={item.step}
+                    onClick={() => setCurrentStep(item.step)}
+                    class={`flex items-center p-3 rounded-xl cursor-pointer transition-all ${
+                      currentStep === item.step ? "bg-surface-container-high border-l-4 border-secondary" : "bg-surface-container-low"
+                    }`}
+                  >
+                    <div class={`flex items-center justify-center w-7 h-7 rounded-full font-bold flex-shrink-0 ${
+                      currentStep === item.step ? "bg-primary-container text-on-primary-container" : "bg-surface-container-highest text-on-surface-variant"
+                    }`}>
+                      {item.step}
+                    </div>
+                    <div class="ml-3 flex-1 min-w-0">
+                      <p class="font-body-md text-body-md font-semibold text-on-surface">{item.title}</p>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant truncate">{item.desc}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[20px] text-secondary">
+                      {currentStep === item.step ? "radio_button_checked" : "radio_button_unchecked"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div class="flex flex-col space-y-2.5 pt-2">
+                <button 
+                  onClick={() => navigate('/heart-rate')}
+                  class="w-full h-13 py-3.5 px-4 rounded-full bg-primary-container text-on-primary-container font-headline-md text-body-lg font-bold flex items-center justify-center space-x-2 shadow-lg hover:opacity-95"
+                >
+                  <span class="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>ecg_heart</span>
+                  <span>Confirm Reading</span>
+                </button>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <button 
+                    onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
+                    class="h-11 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center space-x-1"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                    <span>Back</span>
+                  </button>
+                  <button 
+                    onClick={() => setCurrentStep(prev => Math.min(3, prev + 1))}
+                    class="h-11 rounded-full bg-surface-container-highest text-secondary font-label-md text-label-md font-semibold flex items-center justify-center space-x-1"
+                  >
+                    <span>Next Step</span>
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 1: Activity & Flight Telemetry
+    const ActivityTelemetryScreen = () => {
+      const [timeframe, setTimeframe] = useState("week");
+      const [logging, setLogging] = useState(false);
+      const [logged, setLogged] = useState(false);
+
+      const handleLog = () => {
+        setLogging(true);
+        setTimeout(() => {
+          setLogging(false);
+          setLogged(true);
+          setTimeout(() => setLogged(false), 2000);
+        }, 1000);
+      };
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Flight Telemetry" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-4">
+              <div class="w-full bg-surface-container-lowest p-1 rounded-full flex items-center justify-between shadow-inner">
+                {["week", "mission", "month"].map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setTimeframe(tab)}
+                    class={`flex-1 py-1.5 px-3 rounded-full font-label-md text-label-md text-center transition-all capitalize ${
+                      timeframe === tab ? "bg-primary-container text-on-primary-container font-semibold shadow-sm flex items-center justify-center gap-1" : "text-on-surface-variant hover:text-on-surface"
+                    }`}
+                  >
+                    {timeframe === tab && <span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>}
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              {/* Weekly Telemetry Activity Adherence Chart Card */}
+              <section class="bg-surface-container-low rounded-xl p-space-md shadow-md relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+                      <span class="material-symbols-outlined text-[18px]">bar_chart</span>
+                    </div>
+                    <div>
+                      <h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Weekly Telemetry</h2>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Task &amp; protocol compliance</p>
+                    </div>
+                  </div>
+                  <span class="font-label-caps text-label-caps px-2 py-0.5 rounded-full bg-secondary/10 text-secondary">Optimal</span>
+                </div>
+
+                <div class="w-full pt-2">
+                  <div class="h-36 w-full flex items-end justify-between gap-2 px-1 relative">
+                    <div class="absolute left-0 right-0 top-7 flex items-center gap-1.5 opacity-40 pointer-events-none">
+                      <div class="w-full border-t border-dashed border-secondary"></div>
+                      <span class="font-label-sm text-label-sm text-secondary shrink-0 pr-1">85% Goal</span>
+                    </div>
+                    {[
+                      { day: "Mon", h: "68%" },
+                      { day: "Tue", h: "82%" },
+                      { day: "Wed", h: "52%" },
+                      { day: "Thu", h: "94%", active: true },
+                      { day: "Fri", h: "76%" },
+                      { day: "Sat", h: "60%" },
+                      { day: "Sun", h: "88%" },
+                    ].map(bar => (
+                      <div key={bar.day} class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                        <div class="w-full bg-surface-container-highest rounded-t-sm h-28 relative flex items-end overflow-hidden">
+                          <div class={`w-full rounded-t-sm transition-all duration-500 ${bar.active ? "bg-primary-container shadow-sm" : "bg-secondary-container/70 hover:brightness-125"}`} style={{ height: bar.h }}></div>
+                        </div>
+                        <span class={`font-label-sm text-label-sm ${bar.active ? "text-primary font-semibold" : "text-on-surface-variant"}`}>{bar.day}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Translunar Trajectory Map */}
+              <section class="bg-surface-container-low rounded-xl overflow-hidden shadow-md flex flex-col">
+                <div class="p-space-md pb-3 flex items-center justify-between bg-surface-container-high/40">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+                      <span class="material-symbols-outlined text-[20px]">explore</span>
+                    </div>
+                    <div>
+                      <h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Translunar Trajectory</h3>
+                      <p class="font-label-sm text-label-sm text-on-surface-variant">Artemis II • Flight Day 12 of 21</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-highest">
+                    <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                    <span class="font-label-caps text-label-caps text-secondary">Nominal</span>
+                  </div>
+                </div>
+
+                <div class="relative w-full aspect-[16/10] bg-surface-container-lowest overflow-hidden">
+                  <img alt="Translunar trajectory map" class="w-full h-full object-cover object-center filter brightness-90 contrast-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3-3ATdKQ4MDMaLi5oFe4a6qYD5iqV1sYoAPBpIzdzZFx9LTL1IbDvhR9HZs3lqz6DEYzbWrSUXWhhv48DeuFRRjvEynWY_UVlP4u77DzLZPU1KPBJv36k10tHy4PTwhpv2-CZsvZtJrvLPQAMvKISpmNPhETnvYdzfYudSji7qcCgALclZe8vQd_agHps9mhKgDLFS8eTflZgJ5HsBpK40vE0bo5k0_NABPm3Xjjw"/>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                    <div class="backdrop-blur-md bg-surface-container-lowest/80 px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">near_me</span>
+                      <div>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant leading-none">Dist. to Moon</p>
+                        <p class="font-body-md text-body-md text-on-surface font-semibold leading-tight">112,780 km</p>
+                      </div>
+                    </div>
+                    <div class="backdrop-blur-md bg-surface-container-lowest/80 px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+                      <div>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant leading-none">Status</p>
+                        <p class="font-body-md text-body-md text-secondary font-semibold leading-tight">On Schedule</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div class="pt-1">
+                <button 
+                  onClick={handleLog}
+                  class="w-full py-3.5 px-space-md rounded-full bg-primary-container text-on-primary-container font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all hover:brightness-110"
+                >
+                  <span class={`material-symbols-outlined text-[20px] ${logging ? "animate-spin" : ""}`}>
+                    {logging ? "sync" : (logged ? "check_circle" : "fitness_center")}
+                  </span>
+                  <span>{logging ? "Syncing Sensor Pod..." : (logged ? "Protocol Registered" : "Log Scheduled Exercise Protocol")}</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 6: Milestones / Achievements Screen
+    const AchievementsScreen = () => {
+      const navigate = useNavigate();
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Missions & Badges" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-space-md">
+              <div class="relative overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-md">
+                <div class="relative z-10 grid grid-cols-2 gap-space-sm items-center">
+                  <div class="flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container/70 shadow-sm">
+                    <div class="relative w-28 h-28 flex items-center justify-center">
+                      <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
+                        <circle class="text-surface-variant/50" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" strokeWidth="8"></circle>
+                        <circle cx="50" cy="50" fill="transparent" r="40" stroke="#6ed2ff" strokeDasharray="251.2" strokeDashoffset="37.68" strokeLinecap="round" strokeWidth="8"></circle>
+                      </svg>
+                      <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span class="font-metric-display text-metric-display text-on-surface tracking-tight leading-none">85%</span>
+                        <span class="font-label-caps text-label-caps text-secondary uppercase mt-0.5">Active</span>
+                      </div>
+                    </div>
+                    <p class="font-label-md text-label-md text-on-surface font-medium mt-2">Mission Progress</p>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">Artemis-2 Orbital Phase</span>
+                  </div>
+
+                  <div class="flex flex-col space-y-space-sm">
+                    <div class="flex items-center space-x-space-sm p-space-sm rounded-xl bg-surface-container/70">
+                      <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-secondary flex-shrink-0 shadow-inner">
+                        <span class="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Total Points</span>
+                        <span class="font-headline-md text-headline-md text-on-surface font-semibold truncate block">1,250 <span class="font-label-sm text-label-sm text-secondary font-normal">pts</span></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center space-x-space-sm p-space-sm rounded-xl bg-surface-container/70">
+                      <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary-fixed-dim flex-shrink-0 shadow-inner">
+                        <span class="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Bio Sync</span>
+                        <span class="font-headline-md text-headline-md text-on-surface font-semibold truncate block">5 Days <span class="font-label-sm text-label-sm text-primary font-normal">Streak</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Achievements Showcase */}
+              <div class="flex flex-col space-y-space-sm">
+                <div class="flex items-center justify-between">
+                  <h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Your Achievements</h2>
+                  <span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-label-caps text-label-caps font-semibold">3 Unlocked</span>
+                </div>
+                <div class="relative w-full rounded-xl overflow-hidden bg-surface-container-low shadow-sm">
+                  <div class="relative w-full aspect-[2/1] overflow-hidden">
+                    <img alt="Holographic achievement badges" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwuqXDxhGoBra-ug4473PvWpaQCPCuB9HVP2h-CmMsLx_sjpvUWZbNZ7R0h3dSsC0b98sK12B_THfiPNbyu2V6dANo1moVtptEfc_G5UiLCrIf5TjkxSSTbP3_ayML-CiIUk4d7dyu4YiYbgIrUs4lVFFrIo2akX1vdr2gANRgNeYIQl3FlRuqdbFF-lv9LtXGMx9R3r49as0_G_iKgo58nkK4So8PQpaxjqWLEQYA"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent"></div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-space-xs p-space-sm -mt-2 relative z-10 text-center">
+                    <div class="flex flex-col items-center p-space-xs rounded-lg bg-surface-container/60 backdrop-blur-sm">
+                      <div class="w-2 h-2 rounded-full bg-primary mb-1 shadow-sm"></div>
+                      <span class="font-label-sm text-label-sm text-on-surface font-semibold line-clamp-1">Health</span>
+                      <span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">Champion</span>
+                    </div>
+                    <div class="flex flex-col items-center p-space-xs rounded-lg bg-surface-container/60 backdrop-blur-sm">
+                      <div class="w-2 h-2 rounded-full bg-secondary mb-1 shadow-sm"></div>
+                      <span class="font-label-sm text-label-sm text-on-surface font-semibold line-clamp-1">Sleep</span>
+                      <span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">Monitoring</span>
+                    </div>
+                    <div class="flex flex-col items-center p-space-xs rounded-lg bg-surface-container/60 backdrop-blur-sm">
+                      <div class="w-2 h-2 rounded-full bg-tertiary mb-1 shadow-sm"></div>
+                      <span class="font-label-sm text-label-sm text-on-surface font-semibold line-clamp-1">Protocol</span>
+                      <span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">Explorer</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Directives */}
+              <div class="flex flex-col space-y-space-sm">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">Active Directives</h3>
+                  <span class="font-label-sm text-label-sm text-secondary">Reset in 04:18:22</span>
+                </div>
+                <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm">
+                  <div class="flex items-start space-x-space-sm min-w-0 pr-space-xs">
+                    <div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-secondary flex-shrink-0 mt-0.5">
+                      <span class="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    </div>
+                    <div class="min-w-0">
+                      <h4 class="font-body-md text-body-md text-on-surface font-medium truncate">Daily Biometric Sweep</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant truncate">Full Vitals, SpO2 &amp; Stress recorded</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-col items-end flex-shrink-0">
+                    <span class="font-label-caps text-label-caps text-secondary font-bold">+50 PTS</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">COMPLETED</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-space-xs">
+                <button 
+                  onClick={() => navigate('/health')}
+                  class="w-full py-3.5 px-space-md rounded-full bg-primary-container text-on-primary font-headline-md text-headline-md flex items-center justify-center space-x-space-xs shadow-md"
+                >
+                  <span class="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>military_tech</span>
+                  <span>Log Mission Telemetry</span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 5: Notifications Screen
+    const NotificationsScreen = () => {
+      const [filter, setFilter] = useState("all");
+      const [notifications, setNotifications] = useState([
+        {
+          id: 1,
+          type: "alert",
+          title: "Elevated Heart Rate Detected",
+          body: "Your heart rate reached 108 bpm during microgravity ergometer workout. Exceeded configured resting threshold.",
+          time: "10:24 AM • Bay 3",
+          badge: "Vital Variance",
+          color: "error"
+        },
+        {
+          id: 2,
+          type: "reminder",
+          title: "Mood & Cognitive Check-in Due",
+          body: "Scheduled daily psychological well-being assessment and neuro-reaction test for Flight Shift Beta.",
+          time: "Due in 1 hour • 11:30 AM",
+          badge: "Scheduled Protocol",
+          color: "secondary"
+        },
+        {
+          id: 3,
+          type: "reminder",
+          title: "Artemis Protocol Update",
+          body: "Revised circadian sleep phase shift & ambient cabin lighting sequence synchronized from Houston Flight Control.",
+          time: "Yesterday, 19:40",
+          badge: "Mission Control Uplink",
+          color: "tertiary"
+        }
+      ]);
+
+      const dismiss = (id) => {
+        setNotifications(notifications.filter(n => n.id !== id));
+      };
+
+      const filtered = notifications.filter(n => filter === "all" || n.type === filter);
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Notifications" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8">
+              <div class="flex items-center justify-between py-space-sm mb-space-sm">
+                <div class="flex items-center gap-space-xs">
+                  <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                  </span>
+                  <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">Telemetry Uplink Active</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px] text-primary">sync</span> Synced 1m ago
+                </span>
+              </div>
+
+              {/* Segmented Filter */}
+              <div class="w-full bg-surface-container-lowest p-1 rounded-full flex items-center mb-space-lg shadow-sm">
+                {["all", "alerts", "reminders"].map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setFilter(tab === "alerts" ? "alert" : (tab === "reminders" ? "reminder" : "all"))}
+                    class={`flex-1 py-1.5 px-3 rounded-full text-center font-label-md text-label-md transition-all capitalize flex items-center justify-center gap-1 ${
+                      (filter === tab || (tab === "alerts" && filter === "alert") || (tab === "reminders" && filter === "reminder"))
+                        ? "bg-primary-container text-on-primary-container shadow-sm"
+                        : "text-on-surface-variant hover:text-on-surface"
+                    }`}
+                  >
+                    <span>{tab}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Stream */}
+              <div class="flex flex-col gap-space-md">
+                {filtered.map(item => (
+                  <div key={item.id} class="relative bg-surface-container-high rounded-xl p-space-md overflow-hidden transition-all shadow-md">
+                    <div class="flex items-start gap-space-md">
+                      <div class={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-${item.color} bg-${item.color}-container mt-0.5`}>
+                        <span class="material-symbols-outlined text-[22px]">
+                          {item.color === "error" ? "warning" : (item.color === "secondary" ? "psychology" : "rocket_launch")}
+                        </span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-space-xs mb-1">
+                          <span class={`font-label-caps text-label-caps uppercase tracking-wider text-${item.color}`}>{item.badge}</span>
+                          <button onClick={() => dismiss(item.id)} class="text-on-surface-variant hover:text-on-surface p-0.5 rounded-full transition-colors">
+                            <span class="material-symbols-outlined text-[16px]">close</span>
+                          </button>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface tracking-tight mb-1">{item.title}</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-space-sm leading-relaxed">{item.body}</p>
+                        <div class="flex items-center justify-between gap-space-sm pt-space-xs">
+                          <span class="font-label-sm text-label-sm text-outline">{item.time}</span>
+                          <Link to="/health" class="bg-primary-container text-on-primary-container font-label-md text-label-md px-space-md py-1.5 rounded-full flex items-center gap-1">
+                            <span>View</span>
+                            <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {filtered.length === 0 && (
+                  <div class="flex flex-col items-center justify-center py-12 px-space-md text-center">
+                    <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center text-secondary mb-space-md">
+                      <span class="material-symbols-outlined text-[32px]">done_outline</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-1">All Systems Nominal</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">No pending notifications on this channel.</p>
+                  </div>
+                )}
+              </div>
+
+              {notifications.length > 0 && (
+                <div class="mt-space-lg flex items-center justify-center">
+                  <button onClick={() => setNotifications([])} class="flex items-center gap-1.5 text-on-surface-variant hover:text-error font-label-md text-label-md py-2 px-4 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">clear_all</span>
+                    <span>Clear All Notifications</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 3: Settings Screen
+    const SettingsScreen = () => {
+      const navigate = useNavigate();
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Settings & Terminal" showBack={true} />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8">
+              {/* Telemetry Link Status */}
+              <section class="mt-space-sm mb-space-md bg-surface-container/70 backdrop-blur-md p-space-md rounded-xl flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-space-md min-w-0">
+                  <div class="relative flex items-center justify-center w-11 h-11 rounded-full bg-surface-container-high text-secondary flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">satellite_alt</span>
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(110,210,255,0.7)] animate-pulse"></span>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-headline-md text-[15px] leading-tight text-on-surface truncate">Orbital Link Active</span>
+                      <span class="font-label-caps text-[9px] px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary tracking-wider font-semibold uppercase">Nominal</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Artemis Relay • 12ms Telemetry Latency</p>
+                  </div>
+                </div>
+                <button aria-label="Sync" class="w-9 h-9 flex items-center justify-center rounded-full bg-surface-container-highest/60 text-on-surface-variant hover:text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">sync</span>
+                </button>
+              </section>
+
+              {/* Notifications Group */}
+              <section class="mb-space-lg">
+                <h2 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase px-space-xs mb-space-sm flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[14px]">notifications_active</span>
+                  Notifications
+                </h2>
+                <div class="bg-surface-container/80 backdrop-blur-md rounded-xl overflow-hidden shadow-sm flex flex-col gap-[1px]">
+                  <label class="flex items-center justify-between p-space-md bg-surface-container/60 cursor-pointer">
+                    <div class="flex items-center gap-space-md min-w-0 pr-space-sm">
+                      <div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary flex-shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">monitor_heart</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="block font-headline-md text-[15px] text-on-surface truncate">Health Alerts</span>
+                        <span class="block font-body-sm text-body-sm text-on-surface-variant truncate">Critical heart rate &amp; vitals triggers</span>
+                      </div>
+                    </div>
+                    <input defaultChecked class="w-5 h-5 rounded bg-surface-container-highest accent-secondary cursor-pointer" type="checkbox"/>
+                  </label>
+
+                  <label class="flex items-center justify-between p-space-md bg-surface-container/60 cursor-pointer">
+                    <div class="flex items-center gap-space-md min-w-0 pr-space-sm">
+                      <div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary flex-shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">timer</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="block font-headline-md text-[15px] text-on-surface truncate">Measurement Reminders</span>
+                        <span class="block font-body-sm text-body-sm text-on-surface-variant truncate">Scheduled BP, SPO2 &amp; checks</span>
+                      </div>
+                    </div>
+                    <input defaultChecked class="w-5 h-5 rounded bg-surface-container-highest accent-secondary cursor-pointer" type="checkbox"/>
+                  </label>
+                </div>
+              </section>
+
+              {/* Preferences Group */}
+              <section class="mb-space-lg">
+                <h2 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase px-space-xs mb-space-sm flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[14px]">tune</span>
+                  Preferences
+                </h2>
+                <div class="bg-surface-container/80 backdrop-blur-md rounded-xl overflow-hidden shadow-sm flex flex-col gap-[1px]">
+                  <div class="w-full flex items-center justify-between p-space-md bg-surface-container/60">
+                    <div class="flex items-center gap-space-md min-w-0 pr-space-sm">
+                      <div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary flex-shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">palette</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="block font-headline-md text-[15px] text-on-surface truncate">Display Preferences</span>
+                        <span class="block font-body-sm text-body-sm text-on-surface-variant truncate">Deep Space Dark • Metric SI</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-[20px] text-on-surface-variant">chevron_right</span>
+                  </div>
+                </div>
+              </section>
+
+              {/* Disconnect */}
+              <section class="mt-space-xs flex flex-col items-center">
+                <button 
+                  onClick={() => navigate('/')}
+                  class="w-full py-3.5 px-space-md rounded-xl bg-error-container/20 hover:bg-error-container/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 group" 
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[20px] text-error group-hover:rotate-12 transition-transform">logout</span>
+                  <span class="font-headline-md text-[15px] text-error font-medium">Disconnect Terminal Session</span>
+                </button>
+                <p class="font-label-sm text-label-sm text-outline mt-space-sm tracking-wide text-center">
+                  Astronaut ID: <span class="font-semibold text-on-surface-variant">AST-7421</span> • Flight Deck Alpha
+                </p>
+              </section>
+            </div>
+          </main>
+        </div>
+      );
+    };
+
+    // SCREEN 2: Astronaut Profile Screen
+    const ProfileScreen = () => {
+      const navigate = useNavigate();
+
+      return (
+        <div class="flex-1 flex flex-col">
+          <AppHeader title="Profile" />
+          <main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin">
+            <div class="flex flex-col w-full pb-8 space-y-space-md">
+              {/* Identity Card */}
+              <div class="relative w-full overflow-hidden rounded-xl bg-surface-container-high p-space-md shadow-xl">
+                <div class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
+                <div class="pointer-events-none absolute -left-10 -bottom-10 h-36 w-36 rounded-full bg-secondary/10 blur-2xl"></div>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                  <div class="relative mb-space-sm">
+                    <div class="relative h-24 w-24 rounded-full p-1 bg-gradient-to-tr from-secondary via-primary-container to-tertiary shadow-[0_0_24px_rgba(110,210,255,0.45)]">
+                      <img class="h-full w-full rounded-full object-cover bg-surface-container-lowest" alt="Astronaut Alex Rivera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVGiWXrWAx_Lo0c7kb4Zhp9T9CPqF4qt5-i5kFs3rVG1iYOc9WmFvr8hkyYuRRUGEy45DS5Kuvd-RKB0i3UBbGorLWq9pe0WfTRvGhbVudwZMwfT5KvFEjL8cUxAHdralT1uyrU9-1mgFwybVsBeGo5rIDHggJztKDdP7qiKiROjbfsjs6_sDzMq-ek6qt7Hwc7Yyr8Xa6lqNvQpf-yh4AmTgGCRfytlDPF_PQD6T1"/>
+                    </div>
+                    <div class="absolute bottom-0 right-1 flex items-center justify-center rounded-full bg-surface-container-lowest p-1 shadow-md">
+                      <div class="h-3 w-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                    </div>
+                  </div>
+                  <h2 class="font-headline-lg text-headline-lg tracking-tight text-on-surface">Alex Rivera</h2>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Astronaut ID: AST-7421</p>
+                  <div class="mt-space-sm inline-flex items-center gap-space-xs rounded-full bg-surface-container-highest/80 px-3 py-1 text-on-surface">
+                    <span class="material-symbols-outlined text-[15px] text-secondary">rocket_launch</span>
+                    <span class="font-label-sm text-label-sm font-medium tracking-wide">Mission: Artemis-2</span>
+                    <span class="text-outline-variant font-label-sm text-label-sm">•</span>
+                    <span class="font-label-sm text-label-sm font-semibold text-secondary">Day 12 / 21</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Banner */}
+              <div class="flex items-center justify-between rounded-xl bg-surface-container-high px-space-md py-space-sm shadow-md">
+                <div class="flex items-center gap-space-sm">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400">
+                    <span class="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+                  </div>
+                  <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Flight Readiness</p>
+                    <p class="font-headline-md text-headline-md text-emerald-400">Excellent</p>
+                  </div>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-label-sm text-label-sm font-medium text-emerald-300">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Nominally Cleared
+                </span>
+              </div>
+
+              {/* Biometrics 3 cluster */}
+              <div class="grid grid-cols-3 gap-space-sm">
+                <div class="flex flex-col items-center justify-center rounded-xl bg-surface-container-high p-space-sm text-center shadow-md">
+                  <div class="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <span class="material-symbols-outlined text-[16px]">bloodtype</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Blood Type</span>
+                  <span class="font-headline-md text-headline-md text-on-surface mt-0.5">O+</span>
+                  <span class="font-label-sm text-label-sm text-secondary text-[10px]">Universal</span>
+                </div>
+                <div class="flex flex-col items-center justify-center rounded-xl bg-surface-container-high p-space-sm text-center shadow-md">
+                  <div class="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-rose-500/10 text-rose-400">
+                    <span class="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Resting HR</span>
+                  <span class="font-headline-md text-headline-md text-on-surface mt-0.5">58 bpm</span>
+                  <span class="font-label-sm text-label-sm text-emerald-400 text-[10px]">Athletic</span>
+                </div>
+                <div class="flex flex-col items-center justify-center rounded-xl bg-surface-container-high p-space-sm text-center shadow-md">
+                  <div class="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+                    <span class="material-symbols-outlined text-[16px]">air</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">VO2 Max</span>
+                  <span class="font-headline-md text-headline-md text-on-surface mt-0.5">54</span>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">ml/kg/min</span>
+                </div>
+              </div>
+
+              {/* Assignment details */}
+              <div class="space-y-space-sm">
+                <div class="flex items-center gap-space-md rounded-xl bg-surface-container-high p-space-md shadow-md">
+                  <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-primary-container text-on-primary">
+                    <span class="material-symbols-outlined text-[24px]">satellite_alt</span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Spacecraft Assignment</span>
+                    <h4 class="font-headline-md text-headline-md text-on-surface truncate">Orion Capsule / Bay 4</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Atmospheric Pressurization: 14.7 psi (Nominal)</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-space-md rounded-xl bg-surface-container-high p-space-md shadow-md">
+                  <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-tertiary-container text-on-tertiary-container">
+                    <span class="material-symbols-outlined text-[24px]">medical_services</span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Flight Surgeon</span>
+                      <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary">
+                        <span class="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse"></span> Connected
+                      </span>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-on-surface truncate">Dr. Sarah Vance</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate">NASA Johnson Space Center</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div class="flex flex-col gap-space-sm pt-space-xs">
+                <button 
+                  onClick={() => navigate('/settings')}
+                  class="flex w-full items-center justify-center gap-space-sm rounded-full bg-surface-container-highest py-3 px-space-lg text-secondary font-headline-md text-headline-md hover:bg-surface-bright active:scale-[0.98] transition-all"
+                >
+                  <span class="material-symbols-outlined text-[20px]">settings</span>
+                  <span>Terminal Configuration</span>
+                </button>
+              </div>
+            </div>
+          </main>
+          <AppNav />
+        </div>
+      );
+    };
+
+    // App Component with MemoryRouter and complete Route definition
+    const App = () => {
+      return (
+        <MemoryRouter initialEntries={["/home"]}>
+          <Routes>
+            <Route path="/" element={<LoginScreen />} />
+            <Route path="/home" element={<HomeScreen />} />
+            <Route path="/health" element={<HealthOverviewScreen />} />
+            <Route path="/risk-assessment" element={<RiskAssessmentScreen />} />
+            <Route path="/radiation-risk" element={<RadiationRiskScreen />} />
+            <Route path="/heart-rate" element={<HeartRateScreen />} />
+            <Route path="/blood-pressure" element={<BloodPressureScreen />} />
+            <Route path="/sleep" element={<SleepScreen />} />
+            <Route path="/measurement-guide" element={<MeasurementGuideScreen />} />
+            <Route path="/activity" element={<ActivityTelemetryScreen />} />
+            <Route path="/health-assistant" element={<ActivityTelemetryScreen />} />
+            <Route path="/achievements" element={<AchievementsScreen />} />
+            <Route path="/notifications" element={<NotificationsScreen />} />
+            <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    };
+
+    // Mount to root
+    const rootElement = document.getElementById('root');
+    const root = createRoot(rootElement);
+    root.render(<App />);
+  </script>
+</body>
+</html>
